@@ -8,7 +8,11 @@ const course = new mongoose.Schema({
         type: Number,
         required: true
     },
-    img: String
+    img: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 module.exports = mongoose.model('Course', course);
