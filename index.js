@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const MongoStore = require('connect-mongodb-session')(session)
+const MongoStore = require('connect-mongodb-session')(session);
 const homeRoutes = require('./routes/home');
 const cardRoutes = require('./routes/card');
 const addRoutes = require('./routes/add');
@@ -12,6 +12,7 @@ const authRouters = require('./routes/auth');
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const varMiddleware = require('./middleware/variables');
+const userMiddleware = require('./middleware/user');
 
 const MONGODB_URI = `mongodb+srv://vova:yXzAn7tPcjoCLjkx@cluster0-1jvkg.mongodb.net/shop`;
 const app = express();
@@ -23,7 +24,7 @@ const hbs = exphbs.create({
 const store = new MongoStore({
     collection: 'sessions',
     uri: MONGODB_URI
-})
+});
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -47,7 +48,8 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
-app.use(varMiddleware)
+app.use(varMiddleware);
+app.use(userMiddleware);
 
 app.use('/', homeRoutes);
 app.use('/add', addRoutes);
